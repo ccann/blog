@@ -9,11 +9,15 @@ title: CIDER
 
 [[https://github.com/clojure-emacs/cider][=CIDER=]] is a clojure IDE for emacs.
 
-#+CAPTION: 
-#+NAME: 
-[[./cider.png]]
 
-CIDER is awesome and provides a lot of really useful utilities for working with
+#+BEGIN_HTML
+<br>
+<image src="/assets/cider.png" class="resizing-img" style="padding: 15px;"/>
+<br><br>
+#+END_HTML
+
+
+CIDER isss awesome and provides a lot of really useful utilities for working with
 clojure. That said, it took me a while to get comfortable. Together with
 =clj-refactor= and =clojure-mode= the host of configuration options and
 keybindings can be totally overwhelming. I'll explain my configuration and
@@ -21,7 +25,7 @@ workflow below in hopes that it provides a nice starting point.
 
 * Configuration
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC elisp
 (use-package clojure-mode
   :ensure t
   :mode (("\\.clj\\'" . clojure-mode)
