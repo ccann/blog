@@ -3,11 +3,12 @@
 #+BEGIN_HTML
 ---
 layout: post
-title: CIDER
+title: A Basic CIDER Configuration with use-package
+tags: emacs cider clojure
 ---
 #+END_HTML
 
-[[https://github.com/clojure-emacs/cider][=CIDER=]] is a clojure IDE for emacs.
+[[https://github.com/clojure-emacs/cider][=CIDER=]] is a Clojure IDE for Emacs.
 
 
 #+BEGIN_HTML
@@ -17,51 +18,109 @@ title: CIDER
 #+END_HTML
 
 
-CIDER isss awesome and provides a lot of really useful utilities for working with
-clojure. That said, it took me a while to get comfortable. Together with
-=clj-refactor= and =clojure-mode= the host of configuration options and
-keybindings can be totally overwhelming. I'll explain my configuration and
-workflow below in hopes that it provides a nice starting point.
+CIDER provides a lot of really useful utilities for working with clojure. That
+said, it took me a while to get comfortable. Together with =clj-refactor= and
+=clojure-mode= the host of configuration options and keybindings can be totally
+overwhelming. I'll explain my configuration and workflow below in hopes that it
+provides a nice starting point.
 
-* Configuration
+* Emacs Configuration
 
-#+BEGIN_SRC elisp
-(use-package clojure-mode
-  :ensure t
-  :mode (("\\.clj\\'" . clojure-mode)
-         ("\\.edn\\'" . clojure-mode))
-  :init
-  (setq cljr-suppress-middleware-warnings t)
-  (add-hook 'clojure-mode-hook #'yas-minor-mode)
-  (add-hook 'clojure-mode-hook #'linum-mode)
-  (add-hook 'clojure-mode-hook #'subword-mode)
-  (add-hook 'clojure-mode-hook #'smartparens-mode)
-  (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
-  (add-hook 'clojure-mode-hook #'eldoc-mode)
-  (add-hook 'clojure-mode-hook #'idle-highlight-mode)
-  (use-package slamhound :defer t :ensure t)
-  (use-package clj-refactor
-    :defer t
-    :ensure t
-    :diminish clj-refactor-mode
-    :config (cljr-add-keybindings-with-prefix "C-c C-m"))  
-  (use-package cider-eval-sexp-fu :defer t :ensure t)
-  (use-package cider
-    :ensure t
-    :defer t
-    :init
-    (add-hook 'cider-mode-hook #'clj-refactor-mode)
-    :diminish subword-mode
-    :config
-    (setq nrepl-log-messages t                   ; log communication with the nREPL server
-          cider-repl-display-in-current-window t 
-          cider-repl-use-clojure-font-lock t
-          cider-prompt-save-file-on-load nil
-          cider-font-lock-dynamically '(macro core function var)
-          nrepl-hide-special-buffers t            ; hide *nrepl-connection* and *nrepl-server*
-          cider-ovelays-use-font-lock t)
-    (cider-repl-toggle-pretty-printing)))
-#+END_SRC
+  [[https://github.com/jwiegley/use-package][=use-package=]] is a macro for
+  configuring packages in emacs. Let's use it to configure =clojure-mode= first.
+  
+  #+BEGIN_SRC elisp
+    (use-package clojure-mode
+      :ensure t
+      :mode (("\\.clj\\'" . clojure-mode)
+             ("\\.edn\\'" . clojure-mode))
+      :init
+      (add-hook 'clojure-mode-hook #'yas-minor-mode)         
+      (add-hook 'clojure-mode-hook #'linum-mode)             
+      (add-hook 'clojure-mode-hook #'subword-mode)           
+      (add-hook 'clojure-mode-hook #'smartparens-mode)       
+      (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
+      (add-hook 'clojure-mode-hook #'eldoc-mode)             
+      (add-hook 'clojure-mode-hook #'idle-highlight-mode))   
+  #+END_SRC
 
-# [`use-package`](https://github.com/jwiegley/use-package) is a macro for configuring packages in emacs. I use it to configure several packages above. The `clojure-mode` package 
+  - I always want =clojure-mode= installed on my system so I designate =:ensure t=
+  - activate =clojure-mode= whenever I open a file with the =.clj= or =.edn= extensions
+  - use =:init= to add hooks for minor-modes we want activated before the
+    =clojure-mode= package is loaded. These are just some of the minor-modes _I
+    personally_ find useful when writing clojure. You'll have to ensure that these
+    modes are installed separately.[[https://github.com/Fuco1/smartparens][=smartparens-mode=]] and similar modes like
+    [[http://emacsrocks.com/e14.html][=paredit=]] and [[https://github.com/abo-abo/lispy][=lispy=]] are quite useful for programming in languages with
+    nested delimeters like Clojure.
+
+  Now let's configure =cider=:
+
+  #+BEGIN_SRC elisp
+    (use-package cider
+      :ensure t
+      :defer t
+      :init (add-hook 'cider-mode-hook #'clj-refactor-mode)
+      :diminish subword-mode
+      :config
+      (setq nrepl-log-messages t                  
+            cider-repl-display-in-current-window t
+            cider-repl-use-clojure-font-lock t    
+            cider-prompt-save-file-on-load 'always-save
+            cider-font-lock-dynamically '(macro core function var)
+            nrepl-hide-special-buffers t            
+            cider-overlays-use-font-lock t)         
+      (cider-repl-toggle-pretty-printing))          
+  #+END_SRC
+
+  What's going on here?
+  - ensure cider is installed
+  - activate =clj-refactor-mode= with =cider= with =add-hook=
+  - =:diminish= hides the =subword-mode= minor mode symbol from the mode-line if =diminish.el= is installed
+  - =:config= executes code after the package is loaded. Here we configure some of
+    cider's variables. Each of these settings is explained in detail in [[https://github.com/clojure-emacs/cider][the CIDER
+    readme]].
+
+  - =(setq nrepl-log-messages t)=: useful for debugging
+  - =(setq cider-repl-display-in-current-window t)=: switch to REPL in this window
+  - =(setq cider-repl-use-clojure-font-lock t)=: syntax highlighting in REPL
+  - =(setq cider-prompt-save-file-on-load 'always-save)=: just always save when loading buffer
+  - =(setq cider-font-lock-dynamically '(macro core function var)=: syntax highlight all namespaces
+  - =(setq nrepl-hide-special-buffers t)=: hide nrepl buffers from menu
+  - =(setq cider-overlays-use-font-lock t)=: syntax highlight evaluation overlays
+  - =(cider-repl-toggle-pretty-printing)=: REPL always pretty-prints results
+
+  Lastly I'll leave you with some of the other package configurations for related
+  modes (some referenced above). Enjoy!:
+
+  #+BEGIN_SRC elisp
+    (use-package cider-eval-sexp-fu
+      :defer t)
+
+    (use-package clj-refactor
+      :defer t
+      :ensure t
+      :diminish clj-refactor-mode
+      :config (cljr-add-keybindings-with-prefix "C-c C-m"))
+
+    (use-package smartparens
+      :defer t
+      :ensure t
+      :diminish smartparens-mode
+      :init
+      (setq sp-override-key-bindings
+            '(("C-<right>" . nil)
+              ("C-<left>" . nil)
+              ("C-)" . sp-forward-slurp-sexp)
+              ("M-<backspace>" . nil)
+              ("C-(" . sp-forward-barf-sexp)))
+      :config
+      (use-package smartparens-config)
+      (sp-use-smartparens-bindings)
+      (sp--update-override-key-bindings)
+      :commands (smartparens-mode show-smartparens-mode))
+  #+END_SRC
+
+  Up next I'll quickly cover my =CIDER= workflow...
+
+
 
