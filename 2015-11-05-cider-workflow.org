@@ -3,7 +3,7 @@
 #+BEGIN_HTML
 ---
 layout: post
-title: CIDER Basics
+title: Hot CIDER Commands
 tags: emacs cider clojure
 ---
 #+END_HTML
