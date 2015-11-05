@@ -1,0 +1,64 @@
+#+OPTIONS: toc:nil num:nil
+
+#+BEGIN_HTML
+---
+layout: post
+title: CIDER Basics
+tags: emacs cider clojure
+---
+#+END_HTML
+
+When I first started using CIDER I was intimidated by the block of 41 =cider-mode= and 25
+=cider-repl-mode= interactive commands (to be fair, there's a lot of overlap between the
+two). Luckily you only need a small subset of these commands at your fingertips to be very
+productive:
+
+* REPLs and Namespaces
+
+Open a project file (created with Leiningen or Boot) and in that buffer =C-c M-j= to launch an
+nREPL server and corresponding REPL client. This client will be associated with your project. You
+can see the nREPL server in the mode line:
+
+#+BEGIN_HTML
+<image src="/assets/mode-line-jack-in.png" class="resizing-img" style="padding: 15px;"/>
+<br>
+#+END_HTML 
+
+You're done with your REPL and you want to quit: =C-c C-q=. This is one of those commands I wish
+I'd seen earlier. I spent so much time killing nREPL buffers manually.
+
+From your clojure buffer you can use =C-c C-n= to switch to this namespace in the REPL. =C-c
+C-z= actually switches to the associated REPL buffer (and back!).
+
+
+* Evaluating Functions
+
+Load your current buffer with =C-c C-k=. You can do form evaluation a few different ways, here are
+the basics:
+
+- Eval the form /to the left/ of the point (cursor) and show the result inline with =C-c C-e=:
+
+#+BEGIN_HTML
+<image src="/assets/eval-last-sexp.png" class="resizing-img" style="padding: 15px;"/>
+<br>
+#+END_HTML 
+  
+- Eval the /top-level/ form at point and show the result inline with =C-c C-c=:
+
+#+BEGIN_HTML
+<image src="/assets/eval-top-level-sexp.png" class="resizing-img" style="padding: 15px;"/>
+<br>
+#+END_HTML 
+
+- *Bonus*: Try =C-c C-p= and =C-c C-f= for pretty-printed popup buffer versions of the previous two
+  evals, respecively. Useful for copying output.
+
+* Other Useful Tools
+
+A few other basic but high impact functions include:
+
+- Jump you to the definition of the symbol at point with =M-.=.
+- See clojure docs for the symbol at point with =C-c C-d d= and java docs with =C-c C-d j=.
+- In the REPL =C-c C-o= will remove the result of the previous evaluation, useful especially when
+  you have a verbose output clogging up your workspace. With the prefix argument, =C-u=, it will
+  remove all previous output.
