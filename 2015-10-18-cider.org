@@ -124,7 +124,7 @@ provides a nice starting point.
       :commands (smartparens-mode show-smartparens-mode))
   #+END_SRC
 
-  Up next I'll quickly cover my =CIDER= workflow...
+  Up next I'll quickly cover a digestible subset of =CIDER= commands...
 
 
 
