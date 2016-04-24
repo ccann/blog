@@ -4,7 +4,6 @@
 ---
 layout: post
 title: Hot CIDER Commands
-tags: emacs cider clojure
 ---
 #+END_HTML
 
@@ -15,14 +14,15 @@ productive:
 
 * REPLs and Namespaces
 
-Open a project file (created with Leiningen or Boot) and in that buffer =C-c M-j= to launch an
-nREPL server and corresponding REPL client. This client will be associated with your project. You
-can see the nREPL server in the mode line:
+Open a project file (created with Leiningen or Boot) and in that buffer =C-c M-j= to
+launch an nREPL server and corresponding REPL client. This client will be associated with
+your project. You can see the nREPL server in the mode line -- in my case:
+=cider[clj:demo@:51099]=:
 
-#+BEGIN_HTML
-<image src="/assets/mode-line-jack-in.png" class="resizing-img" style="padding: 15px;"/>
-<br>
-#+END_HTML 
+# #+BEGIN_HTML
+# <image src="/assets/mode-line-jack-in.png" class="resizing-img" style="padding: 15px;"/>
+# <br>
+# #+END_HTML 
 
 You're done with your REPL and you want to quit: =C-c C-q=. This is one of those commands I wish
 I'd seen earlier. I spent so much time killing nREPL buffers manually.
@@ -36,29 +36,45 @@ C-z= actually switches to the associated REPL buffer (and back!).
 Load your current buffer with =C-c C-k=. You can do form evaluation a few different ways, here are
 the basics:
 
-- Eval the form /to the left/ of the point (cursor) and show the result inline with =C-c C-e=:
+# #+BEGIN_SRC clojure
+# (map #(* % %) (take 10 (range))|)
+# #+END_SRC
 
-#+BEGIN_HTML
-<image src="/assets/eval-last-sexp.png" class="resizing-img" style="padding: 15px;"/>
-<br>
-#+END_HTML 
+- =C-c C-e=: eval the form /to the left/ of the cursor (the pipe below) and show the
+  result inline.
+
+  #+BEGIN_SRC clojure
+  (map #(* % %) (take 5 (range))|) => (0 1 2 3 4)
+  #+END_SRC
+
+- =C-c C-c=: eval the /top-level/ form at point and show the result inline.
+
+  #+BEGIN_SRC clojure
+  (map #(* % %) (take 5 (range))|) => (0 1 4 9 16)
+  #+END_SRC
   
-- Eval the /top-level/ form at point and show the result inline with =C-c C-c=:
 
-#+BEGIN_HTML
-<image src="/assets/eval-top-level-sexp.png" class="resizing-img" style="padding: 15px;"/>
-<br>
-#+END_HTML 
+# #+BEGIN_HTML
+# <image src="/assets/eval-last-sexp.png" class="resizing-img" style="padding: 15px;"/>
+# <br>
+# #+END_HTML 
+  
+
+
+# #+BEGIN_HTML
+# <image src="/assets/eval-top-level-sexp.png" class="resizing-img" style="padding: 15px;"/>
+# <br>
+# #+END_HTML 
 
 - *Bonus*: Try =C-c C-p= and =C-c C-f= for pretty-printed popup buffer versions of the previous two
-  evals, respecively. Useful for copying output.
+  evals, respectively. Useful for copying output.
 
 * Other Useful Tools
 
 A few other basic but high impact functions include:
 
 - Jump you to the definition of the symbol at point with =M-.=.
-- See clojure docs for the symbol at point with =C-c C-d d= and java docs with =C-c C-d j=.
+- See clojure docs for the symbol at point via =C-c C-d d= and java docs with =C-c C-d j=.
 - In the REPL =C-c C-o= will remove the result of the previous evaluation, useful especially when
   you have a verbose output clogging up your workspace. With the prefix argument, =C-u=, it will
   remove all previous output.

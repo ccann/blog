@@ -1,0 +1,24 @@
+#+OPTIONS: toc:nil num:nil
+
+#+BEGIN_HTML
+---
+layout: post
+title: Print to the Same Line in Python
+---
+#+END_HTML
+
+TIL that Python has a sort of unexpected syntax for printing to the same line:
+
+#+BEGIN_SRC python
+print('publish JSON to RabbitMQ exchange...   '),
+publish_json()
+print('[DONE]')
+#+END_SRC
+
+#+BEGIN_SRC shell
+>>> publish JSON to RabbitMQ exchange...    [DONE]
+#+END_SRC
+
+Yes, that dangling comma.
+
+More [[http://stackoverflow.com/questions/5598181/python-print-on-same-line][here]].

@@ -18,11 +18,10 @@ tags: emacs cider clojure
 #+END_HTML
 
 
-CIDER provides a lot of really useful utilities for working with clojure. That
-said, it took me a while to get comfortable. Together with =clj-refactor= and
-=clojure-mode= the host of configuration options and keybindings can be totally
-overwhelming. I'll explain my configuration and workflow below in hopes that it
-provides a nice starting point.
+CIDER provides a lot of really useful utilities for working with clojure. That said, it
+took me a while to get comfortable. Together with =clj-refactor= and =clojure-mode= the
+host of configuration options and keybindings can be totally overwhelming. I'll explain
+my configuration and workflow below in hopes that it provides a nice starting point.
 
 * Emacs Configuration
 
@@ -46,15 +45,14 @@ provides a nice starting point.
 
   - I always want =clojure-mode= installed on my system so I designate =:ensure t=
   - activate =clojure-mode= whenever I open a file with the =.clj= or =.edn= extensions
-  - use =:init= to add hooks for minor-modes we want activated before the
-    =clojure-mode= package is loaded. These are just some of the minor-modes _I
-    personally_ find useful when writing clojure. You'll have to ensure that these
-    modes are installed separately.[[https://github.com/Fuco1/smartparens][=smartparens-mode=]] and similar modes like
-    [[http://emacsrocks.com/e14.html][=paredit=]] and [[https://github.com/abo-abo/lispy][=lispy=]] are quite useful for programming in languages with
-    nested delimeters like Clojure.
+  - use =:init= to add hooks for minor-modes we want activated before the =clojure-mode=
+    package is loaded. These are just some of the minor-modes _I personally_ find useful
+    when writing clojure. You'll have to ensure that these modes are installed
+    separately.[[https://github.com/Fuco1/smartparens][=smartparens-mode=]] and similar modes like [[http://emacsrocks.com/e14.html][=paredit=]] and [[https://github.com/abo-abo/lispy][=lispy=]] are quite
+    useful for programming in languages with nested delimeters like Clojure.
 
   \\
-  Now let's configure =cider=:
+  Now let's configure CIDER:
 
   #+BEGIN_SRC elisp
     (use-package cider
@@ -76,12 +74,13 @@ provides a nice starting point.
   What's going on here?
   - ensure cider is installed
   - activate =clj-refactor-mode= with =cider= with =add-hook=
-  - =:diminish= hides the =subword-mode= minor mode symbol from the mode-line if =diminish.el= is installed
+  - =:diminish= hides the =subword-mode= minor mode symbol from the mode-line if
+    =diminish.el= is installed
   
   \\
-  The =:config= keyword specifies code to be executed after the package is
-  loaded. Here we configure some of cider's variables. Each of the following
-  settings is explained in detail in [[https://github.com/clojure-emacs/cider][the CIDER readme]] too:
+  The =:config= keyword specifies code to be executed after the package is loaded. Here
+  we configure some of cider's variables. Each of the following settings is explained in
+  detail in [[https://github.com/clojure-emacs/cider][the CIDER readme]] too:
 
   - =nrepl-log-messages=: useful for debugging
   - =cider-repl-display-in-current-window=: switch to REPL in this window
@@ -93,8 +92,8 @@ provides a nice starting point.
   - =cider-repl-toggle-pretty-printing=: REPL always pretty-prints results
 
   \\
-  Lastly I'll leave you with some of the other package configurations for related
-  modes (some referenced above). Enjoy!:
+  I'll leave you with some of the other package configurations for related modes
+  (some referenced above). Enjoy!:
 
   #+BEGIN_SRC elisp
     (use-package cider-eval-sexp-fu
@@ -124,7 +123,4 @@ provides a nice starting point.
       :commands (smartparens-mode show-smartparens-mode))
   #+END_SRC
 
-  Up next I'll quickly cover a digestible subset of =CIDER= commands...
-
-
-
+  Up next I'll cover a digestible subset of CIDER commands...
