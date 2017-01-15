@@ -4,6 +4,18 @@
 - This blog uses Jekyll 3, that's it!
 - you need htmlize.el installed and the htmlize package installed on your machine to
   support highlighting syntax on export.
+  
+- Seems that you now need:
+
+``` text
+#+BEGIN_EXPORT html
+---
+layout: post
+title: blah
+tags: foo bar
+---
+#+END_EXPORT
+```
 
 
 
