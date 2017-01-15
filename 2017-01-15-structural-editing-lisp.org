@@ -1,12 +1,12 @@
 #+OPTIONS: toc:nil num:nil
 
-#+BEGIN_HTML
+#+BEGIN_EXPORT html
 ---
 layout: post
 title: Lispy and clj-refactor worship
 tags: emacs clojure
 ---
-#+END_HTML
+#+END_EXPORT
 
 In addition to the functionality provided by =clojure-mode= and =CIDER= I use [[https://github.com/abo-abo/lispy][lispy]] and
 [[https://github.com/clojure-emacs/clj-refactor.el][clj-refactor]] to round out my tooling needs. Each of these packages is deep. I mean really
