@@ -1,0 +1,45 @@
+#+OPTIONS: toc:nil num:nil
+
+#+BEGIN_HTML
+---
+layout: post
+title: Generating Random Latitudes and Longitudes
+---
+#+END_HTML
+
+I've been working on an API that serves up information about geographic coordinates. At
+Weft we're specifically curious about which of our shapefiles contain the coordinates in
+question. In optimizing that query I had to generate a bunch of random coordinates...
+
+#+BEGIN_SRC clojure
+  (defn ->coord
+    [coord-type n]
+    (when n
+      (case coord-type
+        :lat (assert (and (>= n -90) (<= n 90)))
+        :lon (assert (and (>= n -180) (<= n 180))))
+      (->> n (double) (format "%.6f") (Double.))))
+
+  (defn rand-lat []
+    (let [random (java.util.Random.)
+          max 90
+          min -90
+          diff (- max min)]
+      (->> random (.nextDouble) (* diff) (+ min) (->coord :lat))))
+
+  (defn rand-lon []
+    (let [random (java.util.Random.)
+          max 180
+          min -180
+          diff (- max min)]
+      (->> random (.nextDouble) (* diff) (+ min) (->coord :lon))))
+#+END_SRC
+
+These basic functions turn out to be pretty nifty when you want to pass a seq of lat/lon
+pairs to a function:
+
+#+BEGIN_SRC clojure
+(get-enclosing-shapefiles @conn (for [_ (range 100)] [(rand-lat) (rand-lon)]))
+#+END_SRC
+
+That's all. Happy query-optimizing.

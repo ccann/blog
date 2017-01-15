@@ -17,7 +17,7 @@ productive:
 Open a project file (created with Leiningen or Boot) and in that buffer =C-c M-j= to
 launch an nREPL server and corresponding REPL client. This client will be associated with
 your project. You can see the nREPL server in the mode line -- in my case:
-=cider[clj:demo@:51099]=:
+=cider[clj:demo@:51099]=
 
 # #+BEGIN_HTML
 # <image src="/assets/mode-line-jack-in.png" class="resizing-img" style="padding: 15px;"/>

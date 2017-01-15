@@ -1,0 +1,98 @@
+#+OPTIONS: toc:nil num:nil
+
+#+BEGIN_HTML
+---
+layout: post
+title: Lispy and clj-refactor worship
+tags: emacs clojure
+---
+#+END_HTML
+
+In addition to the functionality provided by =clojure-mode= and =CIDER= I use [[https://github.com/abo-abo/lispy][lispy]] and
+[[https://github.com/clojure-emacs/clj-refactor.el][clj-refactor]] to round out my tooling needs. Each of these packages is deep. I mean really
+deep. I'm constantly revisiting each of them to see if there's a new command I can adopt
+or a hidden gem I've missed.
+
+It turns out that these packages complement each other really well -- I wouldn't describe
+them as competing tools even if they do have some functionality overlap. =clj-refactor=
+provides a host of one-off edit recipes (e.g. add a =require= to the namespace) while
+=lispy= provides a composable bottom-up approach to structural editing. Finding the time
+to invest into using each of these to their fullest extent is hard and as such I've
+focused the most on digesting and incorporating =lispy= paired with a pretty small subset
+of the [[https://github.com/clojure-emacs/clj-refactor.el/wiki#available-refactorings][available =clj-refactor= refactorings]], mostly project and namespace-related.
+
+
+- =ap= [[https://github.com/clojure-emacs/clj-refactor.el/wiki/cljr-add-project-dependency][Add project dependency]]
+  My absolute favorite refactoring. Hotload a dependency. Saves you having to visit
+  =project.clj= and, more importantly, =cider-jack-in= again after adding a dep to
+  =project.clj=. But there's more! You get to choose from all available projects and
+  version numbers without leaving your editor to hunt them down. This is especially nice
+  since I'm constantly forgetting the =groupid= of the libraries I frequently use. I tend
+  to follow this one up with an =ar= of course.
+
+
+- =am= [[https://github.com/clojure-emacs/clj-refactor.el/wiki/cljr-add-missing-libspec][Add missing libspec]]
+  My second favorite. Require or import based on the symbol at point. If I'm going to
+  refer, e.g. a function, into my namespace from a library that I haven't required yet I
+  can just type the name of the function and then =C-c C-m am= the full libspec into my
+  =ns= form. With some of the more common libs this happens automatically when you type a
+  commonly used namespace alias like =(str/...= for =clojure.string= but this has you
+  covered for all other cases.
+
+
+- =ar= [[https://github.com/clojure-emacs/clj-refactor.el/wiki/cljr-add-require-to-ns][Add require to namespace definition]]
+  I use this when I know I want to alias an entire namespace instead of =:refer= -ing
+  specific vars.
+
+
+- =ai= [[https://github.com/clojure-emacs/clj-refactor.el/wiki/cljr-add-import-to-ns][Add import to namespace declaration]]
+  The title pretty much sums this one up.
+
+
+- =cn= [[https://github.com/clojure-emacs/clj-refactor.el/wiki/cljr-clean-ns][Clean ns]]
+  Cleans up your namespace. I love using this after I've been working with a namespace
+  for a while to clean up unused deps and for the clean, easily digestable =ns= form.
+
+
+- =rf= [[https://github.com/clojure-emacs/clj-refactor.el/wiki/cljr-rename-file-or-dir][Rename file or dir]]
+  I'm constantly moving namespaces around. Saves you having to update the =ns= form
+  manually and remembering to use underscores instead of dashes in the file name.
+
+As for =lispy= there's similarly [[http://oremacs.com/lispy/][a lot to like]]. Some of my favorite bits are:
+
+- =q=, =a=, =t=: some of the =ace-= commands. Navigating the point to an open paren like
+  this is awesome. I love that both are one key away (which is the case for most of
+  these, but still!). =a= is especially great for deleting, copying symbols. =t= for
+  teleporting expressions and regions is immensely useful.
+
+
+- =v=, =N=, =W=: recentering the view is great for ergonomics. I use vertical monitors
+  and =v= let's me mindlessly pull what I'm editing into view instead of craning my
+  neck. =N= for narrowing has a similar use-case but with the added benefit of allowing
+  you to focus on just that expression. This is a really nice way to focus up.
+
+
+- =i=: fix up whitespace and indentation with a single keystroke. Yes please.
+
+Both =lispy= and =clj-refactor= also require very little configuration. I'll leave you
+with my configs if you want to get started with either package and need a jumping off
+point. Oh, and lastly, I'd like to express my gratitude to the authors of these
+packages: *thank you so much for what you do!*
+
+#+BEGIN_SRC elisp
+
+(add-hook 'cider-mode-hook #'clj-refactor-mode)
+
+(add-hook 'clojure-mode-hook #'lispy-mode)
+
+(use-package clj-refactor
+  :ensure t
+  :defer t
+  :config (cljr-add-keybindings-with-prefix "C-c C-m"))
+
+(use-package lispy
+  :ensure t
+  :defer t
+  :init (setq lispy-compat '(cider)))
+  
+#+END_SRC
